@@ -1,7 +1,10 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, Request
 from sqlalchemy.orm import Session
 from app import schemas, models, database
 from app.custom_json_encoder import PrettyJSONResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse
 
 app = FastAPI(default_response_class=PrettyJSONResponse)
 
@@ -32,10 +35,10 @@ def create_game(game: schemas.GameCreate, db: Session = Depends(get_db)):
     db.refresh(db_game)
     return db_game
 
-@app.get("/game/", response_model=list[schemas.Game])
-def read_games(db: Session = Depends(get_db)):
-    games = db.query(models.Game).all()
-    return games
+# @app.get("/game/", response_model=list[schemas.Game])
+# def read_games(db: Session = Depends(get_db)):
+#     games = db.query(models.Game).all()
+#     return games
 
 @app.get("/platform/", response_model=list[schemas.Platform])
 def read_platforms(db: Session = Depends(get_db)):
@@ -56,3 +59,21 @@ def read_developers(db: Session = Depends(get_db)):
 def read_tags(db: Session = Depends(get_db)):
     tags = db.query(models.Tag).all()
     return tags
+
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+templates = Jinja2Templates(directory="templates")
+
+@app.get("/items/{id}", response_class=HTMLResponse)
+async def read_item(request: Request, id: str):
+    return templates.TemplateResponse(
+        request=request, name="item.html", context={"id": id}
+    )
+    
+@app.get("/game/{id}", response_model=list[schemas.Game])
+async def read_games(request: Request,db: Session = Depends(get_db)):
+    games = db.query(models.Game).all()
+    return templates.TemplateResponse(
+        request=request, name="game.html", context={"id": id, "games": games}
+    )
