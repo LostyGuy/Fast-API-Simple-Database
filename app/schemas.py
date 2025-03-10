@@ -55,9 +55,3 @@ class GamesBase(BaseModel):
     publisher: str
     tag: str
     platform: str
-class GamesCreate(GamesBase):
-    pass
-class Games(GamesBase):
-    game_id: int
-    class Config:
-        from_attributes = True
