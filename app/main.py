@@ -60,10 +60,10 @@ async def root():
 #     tags = db.query(models.Tag).all()
 #     return tags
 
-@app.get("/games/", response_model=list[schemas.Games])
-def read_games(db: Session = Depends(get_db)):
-    games = db.query(models.Games).all()
-    return games
+# @app.get("/games/{id}", response_model=list[schemas.Games])
+# def read_games(db: Session = Depends(get_db)):
+#     games = db.query(models.Games).all()
+#     return games
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
