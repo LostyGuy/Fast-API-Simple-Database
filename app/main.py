@@ -84,7 +84,7 @@ async def read_games(request: Request, id: int ,db: Session = Depends(get_db)):
 
 @app.get("/games_list/{id}", response_class=HTMLResponse)
 async def read_games_list(request: Request, id: int, db: Session = Depends(get_db)):
-    games_list = db.query(models.Game).filter(models.Game.id == id).all()
+    games_list = db.query(models.Games).filter(models.Games.game_id == id).all()
     return templates.TemplateResponse(
         "games_list.html", {"request": request, "id": id, "games_list": games_list}
     )
