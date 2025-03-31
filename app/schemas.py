@@ -55,3 +55,4 @@ class GamesBase(BaseModel):
     publisher: str
     tag: str
     platform: str
+    img_url: str
