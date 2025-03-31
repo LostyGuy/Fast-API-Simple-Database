@@ -39,3 +39,4 @@ class Games(Base):
     publisher = Column(String, index=True)
     tag = Column(String, index=True)
     platform = Column(String, index=True)
+    img_url = Column(String, index=True)
