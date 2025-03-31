@@ -69,22 +69,22 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
 
-@app.get("/items/{id}", response_class=HTMLResponse)
-async def read_item(request: Request, id: str):
-    return templates.TemplateResponse(
-        request=request, name="item.html", context={"id": id}
-    )
+# @app.get("/items/{id}", response_class=HTMLResponse)
+# async def read_item(request: Request, id: str):
+#     return templates.TemplateResponse(
+#         request=request, name="item.html", context={"id": id}
+#     )
 
 @app.get("/game/{id}", response_model=list[schemas.GamesBase])
 async def read_games(request: Request, id: int ,db: Session = Depends(get_db)):
-    games = db.query(models.Games).all()
+    games_list = db.query(models.Games).all()
     return templates.TemplateResponse(
-        request=request, name="game.html", context={ "id": id, "games": games}
+        request=request, name="game.html", context={ "id": id, "games": games_list}
     )
 
 @app.get("/games_list/{id}", response_class=HTMLResponse)
 async def read_games_list(request: Request, id: int, db: Session = Depends(get_db)):
-    games_list = db.query(models.Games).filter(models.Games.game_id == id).all()
+    games_list = db.query(models.Games).all()
     return templates.TemplateResponse(
         "games_list.html", {"request": request, "id": id, "games_list": games_list}
     )

@@ -2,16 +2,50 @@
 <head>
     <title>Game Details</title>
 </head>
+<style>
+
+    body {
+        background-color:rgb(3, 88, 206);
+        padding: 20px;
+    }
+    table {
+        margin: auto;
+    }
+    th, td {
+        line-height: 1.5;
+        padding: 10px;
+        text-align: left;
+    }
+    td {
+        background-color: rgb(102, 183, 238);
+    }
+    a {
+        text-decoration: none;
+        color: black;
+        font-size: 16px;
+    }
+</style>
 <body>
-    {% for game in games_list %}
-        <div>
-            <h2>Game ID: {{ game.game_id }}</h2>
-            <p>Title: {{ game.title }}</p>
-            <p>Developer: {{ game.developer }}</p>
-            <p>Publisher: {{ game.publisher }}</p>
-            <p>Tag: {{ game.tag }}</p>
-            <p>Platform: {{ game.platform }}</p>
-        </div>
-    {% endfor %}
+
+    <div>
+        <table>
+            {% for game in games_list %}
+                <tr id="{{game.game_id}}">
+                    <td>
+                        <section style="display: inline-block;">
+                            <img src="{{ game.img_url }}" alt="{{ game.title }}" width="150">
+                        </section>
+                        <section style="display: inline-block;">
+                            <a href="/game/{{game.game_id}}">
+                                {{game.title}}<br>
+                                {{game.tag}}
+                                {{game.platform}}<br><br>
+                            </a>
+                        </section>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>    
+    </div>    
 </body>
 </html>
